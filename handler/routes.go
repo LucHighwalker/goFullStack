@@ -44,6 +44,15 @@ func (h *Handler) Register(v1 *echo.Group) {
 	articles.GET("/:slug", h.GetArticle)
 	articles.GET("/:slug/comments", h.GetComments)
 
+	cards := v1.Group("/cards", middleware.JWTWithConfig(
+		middleware.JWTConfig{
+			SigningKey: utils.JWTSecret,
+		},
+	))
+	cards.POST("", h.CreateCard)
+	cards.DELETE("/:name", h.DeleteCard)
+	cards.GET("", h.Cards)
+
 	tags := v1.Group("/tags")
 	tags.GET("", h.Tags)
 }
