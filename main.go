@@ -16,7 +16,8 @@ func main() {
 
 	us := store.NewUserStore(d)
 	as := store.NewArticleStore(d)
-	h := handler.NewHandler(us, as)
+	ms := store.NewMagicStore(d)
+	h := handler.NewHandler(us, as, ms)
 	h.Register(v1)
 	r.Logger.Fatal(r.Start("127.0.0.1:8585"))
 }

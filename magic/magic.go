@@ -4,7 +4,7 @@ import (
 	"golang-starter-pack/model"
 )
 
-type MagicStore interface {
+type Store interface {
 	GetByName(string) (*model.Card, error)
 	CreateCard(*model.Card) error
 	UpdateCard(*model.Card, []string) error

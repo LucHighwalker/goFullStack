@@ -3,10 +3,10 @@ package handler
 import (
 	"time"
 
+	"github.com/labstack/echo/v4"
 	"golang-starter-pack/model"
 	"golang-starter-pack/user"
 	"golang-starter-pack/utils"
-	"github.com/labstack/echo/v4"
 )
 
 type userResponse struct {
@@ -74,6 +74,20 @@ type articleListResponse struct {
 	ArticlesCount int                `json:"articlesCount"`
 }
 
+type singleCardResponse struct {
+	Card *cardResponse `json:"card"`
+}
+
+type cardResponse struct {
+	Name   string `json:"name"`
+	Flavor string `json:"flavor"`
+}
+
+type cardListResponse struct {
+	Cards      []*cardResponse `json:"cards"`
+	CardsCount int             `json:"cardsCount"`
+}
+
 func newArticleResponse(c echo.Context, a *model.Article) *singleArticleResponse {
 	ar := new(articleResponse)
 	ar.TagList = make([]string, 0)
@@ -127,6 +141,25 @@ func newArticleListResponse(us user.Store, userID uint, articles []model.Article
 		r.Articles = append(r.Articles, ar)
 	}
 	r.ArticlesCount = count
+	return r
+}
+
+func newCardResponse(c echo.Context, cd *model.Card) *singleCardResponse {
+	cr := new(cardResponse)
+	cr.Name = cd.Name
+	cr.Flavor = cd.Flavor
+	return &singleCardResponse{cr}
+}
+
+func newCardListResponse(us user.Store, userID uint, cards []model.Card, count int) *cardListResponse {
+	r := new(cardListResponse)
+	r.Cards = make([]*cardResponse, 0)
+	for _, c := range cards {
+		cr := new(cardResponse)
+		cr.Name = c.Name
+		r.Cards = append(r.Cards, cr)
+	}
+	r.CardsCount = count
 	return r
 }
 

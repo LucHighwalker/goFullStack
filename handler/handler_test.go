@@ -9,6 +9,7 @@ import (
 
 	"golang-starter-pack/article"
 	"golang-starter-pack/db"
+	"golang-starter-pack/magic"
 	"golang-starter-pack/model"
 	"golang-starter-pack/router"
 	"golang-starter-pack/store"
@@ -23,6 +24,7 @@ var (
 	d  *gorm.DB
 	us user.Store
 	as article.Store
+	ms magic.Store
 	h  *Handler
 	e  *echo.Echo
 )
@@ -43,7 +45,8 @@ func setup() {
 	db.AutoMigrate(d)
 	us = store.NewUserStore(d)
 	as = store.NewArticleStore(d)
-	h = NewHandler(us, as)
+	ms = store.NewMagicStore(d)
+	h = NewHandler(us, as, ms)
 	e = router.New()
 	loadFixtures()
 }
